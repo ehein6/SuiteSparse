@@ -550,7 +550,7 @@ GrB_Info GB_builder                 // build a matrix from tuples
         // tuple (i,k) or (j,i,k), regardless of where the tuple appears in the
         // list after it is sorted.
         #pragma omp parallel for num_threads(nthreads) schedule(static)
-        for (int64_t k = 0 ; k < nvals ; k++)
+        cilk_for (int64_t k = 0 ; k < nvals ; k++)
         { 
             K_work [k] = k ;
         }
@@ -700,7 +700,7 @@ GrB_Info GB_builder                 // build a matrix from tuples
             {
 
                 #pragma omp parallel for num_threads(nthreads) schedule(static)
-                for (int tid = 0 ; tid < nthreads ; tid++)
+                cilk_for (int tid = 0 ; tid < nthreads ; tid++)
                 {
                     int64_t my_tnvec = 0 ;
                     int64_t tstart = tstart_slice [tid] ;
@@ -740,7 +740,7 @@ GrB_Info GB_builder                 // build a matrix from tuples
         }
 
         #pragma omp parallel for num_threads(nthreads) schedule(static)
-        for (int tid = 0 ; tid < nthreads ; tid++)
+        cilk_for (int tid = 0 ; tid < nthreads ; tid++)
         {
 
             int64_t my_tnvec = 0 ;
@@ -857,7 +857,7 @@ GrB_Info GB_builder                 // build a matrix from tuples
         //----------------------------------------------------------------------
 
         #pragma omp parallel for num_threads(nthreads) schedule(static)
-        for (int tid = 0 ; tid < nthreads ; tid++)
+        cilk_for (int tid = 0 ; tid < nthreads ; tid++)
         {
 
             int64_t my_tnvec = tnvec_slice [tid] ;
@@ -889,7 +889,7 @@ GrB_Info GB_builder                 // build a matrix from tuples
         //----------------------------------------------------------------------
 
         #pragma omp parallel for num_threads(nthreads) schedule(static)
-        for (int tid = 0 ; tid < nthreads ; tid++)
+        cilk_for (int tid = 0 ; tid < nthreads ; tid++)
         {
 
             int64_t my_tnz   = tnz_slice [tid] ;

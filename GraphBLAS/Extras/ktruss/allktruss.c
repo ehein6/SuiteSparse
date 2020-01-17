@@ -70,7 +70,7 @@ void cmult                      // C = (A*A) .* A, overwriting A with C
     // so its values are ignored.
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,chunk)
-    for (Index j = 0 ; j < n ; j++)
+    cilk_for (Index j = 0 ; j < n ; j++)
     {
         // scatter A(:,j) into Mark.  All of w is zero.
         for (int64_t p = Ap [j] ; p < Ap [j+1] ; p++)

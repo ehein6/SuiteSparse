@@ -88,7 +88,7 @@ void GB_cast_array              // typecast an array
     GB_cast_function cast_A_to_C = GB_cast_factory (code1, code2) ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t p = 0 ; p < anz ; p++)
+    cilk_for (int64_t p = 0 ; p < anz ; p++)
     {
         // Cx [p] = Ax [p]
         cast_A_to_C (Cx +(p*csize), Ax +(p*asize), asize) ;

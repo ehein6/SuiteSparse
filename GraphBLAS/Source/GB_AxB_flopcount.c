@@ -224,7 +224,7 @@ GrB_Info GB_AxB_flopcount
     int64_t total_flops = 0 ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
-    for (int tid = 0 ; tid < ntasks ; tid++)
+    cilk_for (int tid = 0 ; tid < ntasks ; tid++)
     {
 
         //----------------------------------------------------------------------

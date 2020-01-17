@@ -1861,6 +1861,8 @@ GrB_Info GB_wait                // finish all pending computations
 
 #endif
 
+#include <cilk/cilk.h>
+
 // by default, give each thread at least 4096 units of work to do
 #define GB_CHUNK_DEFAULT 4096
 

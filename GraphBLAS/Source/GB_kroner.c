@@ -132,7 +132,7 @@ GrB_Info GB_kroner                  // C = kron (A,B)
     //--------------------------------------------------------------------------
 
     #pragma omp parallel for num_threads(nthreads) schedule(guided) collapse(2)
-    for (int64_t kA = 0 ; kA < anvec ; kA++)
+    cilk_for (int64_t kA = 0 ; kA < anvec ; kA++)
     {
         for (int64_t kB = 0 ; kB < bnvec ; kB++)
         {
@@ -165,7 +165,7 @@ GrB_Info GB_kroner                  // C = kron (A,B)
     //--------------------------------------------------------------------------
 
     #pragma omp parallel for num_threads(nthreads) schedule(guided) collapse(2)
-    for (int64_t kA = 0 ; kA < anvec ; kA++)
+    cilk_for (int64_t kA = 0 ; kA < anvec ; kA++)
     {
         for (int64_t kB = 0 ; kB < bnvec ; kB++)
         {

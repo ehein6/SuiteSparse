@@ -215,7 +215,7 @@ bool tri_prep                   // true if successful, false otherwise
 
                 // count the entries in each column of S
                 #pragma omp parallel for num_threads(nthreads)
-                for (Index j = 0 ; j < n ; j++)
+                cilk_for (Index j = 0 ; j < n ; j++)
                 {
                     int64_t jnz = 0 ;
                     for (int64_t p = Ap [j] ; p < Ap [j+1] ; p++)
@@ -240,7 +240,7 @@ bool tri_prep                   // true if successful, false otherwise
 
                 // construct the row indices of S
                 #pragma omp parallel for num_threads(nthreads)
-                for (Index j = 0 ; j < n ; j++)
+                cilk_for (Index j = 0 ; j < n ; j++)
                 {
                     int64_t s = Sp [j] ;
                     for (int64_t p = Ap [j] ; p < Ap [j+1] ; p++)
@@ -261,7 +261,7 @@ bool tri_prep                   // true if successful, false otherwise
 
                 // count the entries in each column of S
                 #pragma omp parallel for num_threads(nthreads)
-                for (Index j = 0 ; j < n ; j++)
+                cilk_for (Index j = 0 ; j < n ; j++)
                 {
                     int64_t jnz = 0 ;
                     for (int64_t p = Ap [j] ; p < Ap [j+1] ; p++)
@@ -286,7 +286,7 @@ bool tri_prep                   // true if successful, false otherwise
 
                 // construct the row indices of S
                 #pragma omp parallel for num_threads(nthreads)
-                for (Index j = 0 ; j < n ; j++)
+                cilk_for (Index j = 0 ; j < n ; j++)
                 {
                     int64_t s = Sp [j] ;
                     for (int64_t p = Ap [j] ; p < Ap [j+1] ; p++)
@@ -311,7 +311,7 @@ bool tri_prep                   // true if successful, false otherwise
 
                 // count the entries in each column of S
                 #pragma omp parallel for num_threads(nthreads)
-                for (Index j = 0 ; j < n ; j++)
+                cilk_for (Index j = 0 ; j < n ; j++)
                 {
                     int64_t jnz = 0 ;
                     for (int64_t p = Ap [j] ; p < Ap [j+1] ; p++)
@@ -336,7 +336,7 @@ bool tri_prep                   // true if successful, false otherwise
 
                 // construct the row indices of S
                 #pragma omp parallel for num_threads(nthreads)
-                for (Index j = 0 ; j < n ; j++)
+                cilk_for (Index j = 0 ; j < n ; j++)
                 {
                     int64_t s = Sp [j] ;
                     for (int64_t p = Ap [j] ; p < Ap [j+1] ; p++)
@@ -362,7 +362,7 @@ bool tri_prep                   // true if successful, false otherwise
 
                 // count the entries in each column of S
                 #pragma omp parallel for num_threads(nthreads)
-                for (Index j = 0 ; j < n ; j++)
+                cilk_for (Index j = 0 ; j < n ; j++)
                 {
                     int64_t jnz = 0 ;
                     for (int64_t p = Ap [j] ; p < Ap [j+1] ; p++)
@@ -387,7 +387,7 @@ bool tri_prep                   // true if successful, false otherwise
 
                 // construct the row indices of S
                 #pragma omp parallel for num_threads(nthreads)
-                for (Index j = 0 ; j < n ; j++)
+                cilk_for (Index j = 0 ; j < n ; j++)
                 {
                     int64_t s = Sp [j] ;
                     for (int64_t p = Ap [j] ; p < Ap [j+1] ; p++)

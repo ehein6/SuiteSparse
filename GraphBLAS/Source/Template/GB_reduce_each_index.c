@@ -84,7 +84,7 @@
 
     // each thread reduces its own slice in parallel
     #pragma omp parallel for num_threads(nth) schedule(static)
-    for (int tid = 0 ; tid < nth ; tid++)
+    cilk_for (int tid = 0 ; tid < nth ; tid++)
     {
 
         //----------------------------------------------------------------------
@@ -210,7 +210,7 @@
         //----------------------------------------------------------------------
 
         #pragma omp parallel for num_threads(nthreads) schedule(static)
-        for (int64_t i = 0 ; i < n ; i++)
+        cilk_for (int64_t i = 0 ; i < n ; i++)
         { 
             Ti [i] = i ;
         }
@@ -258,7 +258,7 @@
             // 256 tasks per thread are created for better load balancing.
 
             #pragma omp parallel for num_threads(nthreads) schedule(dynamic)
-            for (int taskid = 0 ; taskid < ntasks ; taskid++)
+            cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
             {
                 int64_t ifirst, ilast, p = 0 ;
                 GB_PARTITION (ifirst, ilast, n, taskid, ntasks) ;
@@ -272,7 +272,7 @@
             GB_cumsum (Count, ntasks, NULL, 1) ;
 
             #pragma omp parallel for num_threads(nthreads) schedule(dynamic)
-            for (int64_t taskid = 0 ; taskid < ntasks ; taskid++)
+            cilk_for (int64_t taskid = 0 ; taskid < ntasks ; taskid++)
             {
                 int64_t ifirst, ilast, p = Count [taskid] ;
                 int64_t my_count = (Count [taskid+1] - p) ;

@@ -122,7 +122,7 @@
         //----------------------------------------------------------------------
 
         #pragma omp parallel for num_threads(nthreads) schedule(static)
-        for (int tid = 0 ; tid < ntasks ; tid++)
+        cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
 
             //------------------------------------------------------------------

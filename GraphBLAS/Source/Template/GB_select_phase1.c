@@ -29,7 +29,7 @@
     //--------------------------------------------------------------------------
 
     #pragma omp parallel for num_threads(nthreads) schedule(guided)
-    for (int64_t k = 0 ; k < anvec ; k++)
+    cilk_for (int64_t k = 0 ; k < anvec ; k++)
     {
 
         //----------------------------------------------------------------------

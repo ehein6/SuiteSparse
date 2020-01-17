@@ -33,7 +33,7 @@
     //--------------------------------------------------------------------------
 
     #pragma omp parallel for num_threads(naslice) schedule(static)
-    for (int taskid = 0 ; taskid < naslice ; taskid++)
+    cilk_for (int taskid = 0 ; taskid < naslice ; taskid++)
     {
         // get the rowcount for this slice, of size A->vlen
         int64_t *restrict rowcount = Rowcounts [taskid] ;

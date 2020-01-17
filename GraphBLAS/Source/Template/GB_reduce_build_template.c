@@ -32,7 +32,7 @@
         {
 
             #pragma omp parallel for num_threads(nthreads) schedule(static)
-            for (int tid = 0 ; tid < nthreads ; tid++)
+            cilk_for (int tid = 0 ; tid < nthreads ; tid++)
             {
                 int64_t tstart = tstart_slice [tid] ;
                 int64_t tend   = tstart_slice [tid+1] ;
@@ -48,7 +48,7 @@
         {
 
             #pragma omp parallel for num_threads(nthreads) schedule(static)
-            for (int tid = 0 ; tid < nthreads ; tid++)
+            cilk_for (int tid = 0 ; tid < nthreads ; tid++)
             {
                 int64_t tstart = tstart_slice [tid] ;
                 int64_t tend   = tstart_slice [tid+1] ;
@@ -72,7 +72,7 @@
         // via the operator.  T->i must also be constructed.
 
         #pragma omp parallel for num_threads(nthreads) schedule(static)
-        for (int tid = 0 ; tid < nthreads ; tid++)
+        cilk_for (int tid = 0 ; tid < nthreads ; tid++)
         {
             int64_t my_tnz = tnz_slice [tid] ;
             int64_t tstart = tstart_slice [tid] ;

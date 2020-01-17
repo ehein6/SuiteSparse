@@ -85,7 +85,7 @@ void GB_apply_op            // apply a unary operator, Cx = op ((xtype) Ax)
     GxB_unary_function fop = op->function ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t p = 0 ; p < anz ; p++)
+    cilk_for (int64_t p = 0 ; p < anz ; p++)
     { 
         // xwork = (xtype) Ax [p]
         GB_void xwork [GB_PGI(xsize)] ;

@@ -192,7 +192,7 @@ GrB_Info GB_AxB_dot2                // C=A'*B or C<!M>=A'*B, dot product method
 
     // cumulative sum of counts in each column
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t k = 0 ; k < cnvec ; k++)
+    cilk_for (int64_t k = 0 ; k < cnvec ; k++)
     {
         int64_t s = 0 ;
         for (int taskid = 0 ; taskid < naslice ; taskid++)

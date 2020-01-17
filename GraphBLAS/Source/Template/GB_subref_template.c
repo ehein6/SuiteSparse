@@ -103,7 +103,7 @@
     //--------------------------------------------------------------------------
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
-    for (int taskid = 0 ; taskid < ntasks ; taskid++)
+    cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
     {
 
         //----------------------------------------------------------------------
@@ -654,7 +654,7 @@
     if (post_sort)
     {
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
-        for (int taskid = 0 ; taskid < ntasks ; taskid++)
+        cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
         {
             int64_t kC = TaskList [taskid].kfirst ;
             bool do_post_sort = (TaskList [taskid].len != 0) ;

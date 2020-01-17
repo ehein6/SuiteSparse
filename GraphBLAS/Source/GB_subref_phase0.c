@@ -405,7 +405,7 @@ GrB_Info GB_subref_phase0
 
         // scan all of Ah and check each entry if it appears in J
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
-        for (int tid = 0 ; tid < ntasks ; tid++)
+        cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t kA_start, kA_end, my_Cnvec = 0 ;
             GB_PARTITION (kA_start, kA_end, anvec,
@@ -441,7 +441,7 @@ GrB_Info GB_subref_phase0
 
         // scan all of J and check each entry if it appears in Ah
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
-        for (int tid = 0 ; tid < ntasks ; tid++)
+        cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t jC_start, jC_end, my_Cnvec = 0 ;
             GB_PARTITION (jC_start, jC_end, nJ, tid, ntasks) ;
@@ -521,7 +521,7 @@ GrB_Info GB_subref_phase0
         //----------------------------------------------------------------------
 
         #pragma omp parallel for num_threads(nthreads) schedule(static)
-        for (int64_t jC = 0 ; jC < nJ ; jC++)
+        cilk_for (int64_t jC = 0 ; jC < nJ ; jC++)
         { 
             int64_t jA = GB_ijlist (J, jC, Jkind, Jcolon) ;
             GB_find_Ap_start_end (jA, Ap, Ai, avlen, imin, imax,
@@ -540,7 +540,7 @@ GrB_Info GB_subref_phase0
         // Ah, of length Cnvec = anvec.  so kA = kC.  Ap has also been trimmed.
 
         #pragma omp parallel for num_threads(nthreads) schedule(static)
-        for (int64_t kC = 0 ; kC < Cnvec ; kC++)
+        cilk_for (int64_t kC = 0 ; kC < Cnvec ; kC++)
         { 
             int64_t kA = kC ;
             int64_t jA = Ah [kA] ;
@@ -565,7 +565,7 @@ GrB_Info GB_subref_phase0
         if (jinc > 0)
         {
             #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
-            for (int tid = 0 ; tid < ntasks ; tid++)
+            cilk_for (int tid = 0 ; tid < ntasks ; tid++)
             {
                 int64_t kA_start, kA_end ;
                 GB_PARTITION (kA_start, kA_end, anvec, tid, ntasks) ;
@@ -587,7 +587,7 @@ GrB_Info GB_subref_phase0
         else
         {
             #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
-            for (int tid = 0 ; tid < ntasks ; tid++)
+            cilk_for (int tid = 0 ; tid < ntasks ; tid++)
             {
                 int64_t kA_start, kA_end ;
                 GB_PARTITION (kA_start, kA_end, anvec, ntasks-tid-1, ntasks) ;
@@ -620,7 +620,7 @@ GrB_Info GB_subref_phase0
         // then found in Ah, via binary search.
 
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
-        for (int tid = 0 ; tid < ntasks ; tid++)
+        cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t jC_start, jC_end ;
             GB_PARTITION (jC_start, jC_end, nJ, tid, ntasks) ;

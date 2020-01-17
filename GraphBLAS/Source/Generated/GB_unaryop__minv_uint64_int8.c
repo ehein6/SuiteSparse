@@ -75,7 +75,7 @@ GrB_Info GB_unop__minv_uint64_int8
     return (GrB_NO_VALUE) ;
     #else
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t p = 0 ; p < anz ; p++)
+    cilk_for (int64_t p = 0 ; p < anz ; p++)
     {
         GB_CAST_OP (p, p) ;
     }

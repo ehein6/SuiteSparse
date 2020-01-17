@@ -159,7 +159,7 @@ int main (int argc, char **argv)
 
     // create the threads
     #pragma omp parallel for num_threads(NTHREADS) 
-    for (int id = 0 ; id < NTHREADS ; id++)
+    cilk_for (int id = 0 ; id < NTHREADS ; id++)
     {
         worker (&Aarray [id], id) ;
     }

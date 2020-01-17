@@ -33,7 +33,7 @@ void GB_matlab_helper1              // convert zero-based indices to one-based
     GB_NTHREADS (nvals) ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t k = 0 ; k < nvals ; k++)
+    cilk_for (int64_t k = 0 ; k < nvals ; k++)
     {
         I_double [k] = (double) (I [k] + 1) ;
     }
@@ -53,7 +53,7 @@ void GB_matlab_helper1i             // convert zero-based indices to one-based
     GB_NTHREADS (nvals) ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t k = 0 ; k < nvals ; k++)
+    cilk_for (int64_t k = 0 ; k < nvals ; k++)
     {
         I [k] ++ ;
     }
@@ -75,7 +75,7 @@ void GB_matlab_helper2              // fill Xp and Xi for a dense matrix
     GB_NTHREADS (ncols) ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t j = 0 ; j <= ncols ; j++)
+    cilk_for (int64_t j = 0 ; j <= ncols ; j++)
     {
         Xp [j] = j * nrows ;
     }
@@ -198,7 +198,7 @@ void GB_matlab_helper5              // construct pattern of S
     GB_NTHREADS (anz) ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t k = 0 ; k < anz ; k++)
+    cilk_for (int64_t k = 0 ; k < anz ; k++)
     {
         Si [k] = Mi [Ai [k]] ;
         Sj [k] = Mj [Ai [k]] ;
@@ -219,7 +219,7 @@ void GB_matlab_helper6              // set Gbool to all true
     GB_NTHREADS (gnvals) ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t k = 0 ; k < gnvals ; k++)
+    cilk_for (int64_t k = 0 ; k < gnvals ; k++)
     {
         Gbool [k] = true ;
     }
@@ -239,7 +239,7 @@ void GB_matlab_helper7              // Kx = uint64 (0:mnz-1)
     GB_NTHREADS (mnz) ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t k = 0 ; k < mnz ; k++)
+    cilk_for (int64_t k = 0 ; k < mnz ; k++)
     {
         Kx [k] = k ;
     }
@@ -261,7 +261,7 @@ void GB_matlab_helper8
     GB_NTHREADS (nvals) ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t k = 0 ; k < nvals ; k++)
+    cilk_for (int64_t k = 0 ; k < nvals ; k++)
     {
         // C [k] = A [0]
         memcpy (C + k * s, A, s) ;

@@ -90,7 +90,7 @@ GrB_Info GB_ijsort
     GB_memcpy (I1, I, ni * sizeof (GrB_Index), nthreads) ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(static)
-    for (int64_t k = 0 ; k < ni ; k++)
+    cilk_for (int64_t k = 0 ; k < ni ; k++)
     { 
         // the key is selected so that the last duplicate entry comes first in
         // the sorted result.  It must be adjusted later, so that the kth entry
@@ -159,7 +159,7 @@ GrB_Info GB_ijsort
     //--------------------------------------------------------------------------
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
-    for (int tid = 0 ; tid < ntasks ; tid++)
+    cilk_for (int tid = 0 ; tid < ntasks ; tid++)
     {
         int64_t kfirst, klast, my_count = (tid == 0) ? 1 : 0 ;
         GB_PARTITION (kfirst, klast, ni, tid, ntasks) ;
@@ -196,7 +196,7 @@ GrB_Info GB_ijsort
     //--------------------------------------------------------------------------
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
-    for (int tid = 0 ; tid < ntasks ; tid++)
+    cilk_for (int tid = 0 ; tid < ntasks ; tid++)
     {
         int64_t kfirst, klast, k2 = Count [tid] ;
         GB_PARTITION (kfirst, klast, ni, tid, ntasks) ;
