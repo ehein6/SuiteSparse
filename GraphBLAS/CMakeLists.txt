@@ -259,28 +259,29 @@ endif ( )
 
 file ( GLOB GRAPHBLAS_SOURCES "Source/*.c" "Source/Generated/*.c" )
 
-add_library ( graphblas SHARED ${GRAPHBLAS_SOURCES} )
-SET_TARGET_PROPERTIES ( graphblas PROPERTIES
-    VERSION ${GraphBLAS_VERSION_MAJOR}.${GraphBLAS_VERSION_MINOR}.${GraphBLAS_VERSION_SUB}
-    SOVERSION ${GraphBLAS_VERSION_MAJOR}
-    C_STANDARD_REQUIRED 11
-    PUBLIC_HEADER "Include/GraphBLAS.h" )
-set_property ( TARGET graphblas PROPERTY C_STANDARD 11 )
+# HACK disable shared library for now
+#add_library ( graphblas SHARED ${GRAPHBLAS_SOURCES} )
+#SET_TARGET_PROPERTIES ( graphblas PROPERTIES
+#    VERSION ${GraphBLAS_VERSION_MAJOR}.${GraphBLAS_VERSION_MINOR}.${GraphBLAS_VERSION_SUB}
+#    SOVERSION ${GraphBLAS_VERSION_MAJOR}
+#    C_STANDARD_REQUIRED 11
+#    PUBLIC_HEADER "Include/GraphBLAS.h" )
+#set_property ( TARGET graphblas PROPERTY C_STANDARD 11 )
 
 #-------------------------------------------------------------------------------
 # static graphblas library properties
 #-------------------------------------------------------------------------------
 
-if ( BUILD_GRB_STATIC_LIBRARY )
-    add_library ( graphblas_static STATIC ${GRAPHBLAS_SOURCES} )
-    SET_TARGET_PROPERTIES ( graphblas_static PROPERTIES
-       VERSION ${GraphBLAS_VERSION_MAJOR}.${GraphBLAS_VERSION_MINOR}.${GraphBLAS_VERSION_SUB}
-       OUTPUT_NAME graphblas
-       SOVERSION ${GraphBLAS_VERSION_MAJOR}
-       C_STANDARD_REQUIRED 11
-       PUBLIC_HEADER "Include/GraphBLAS.h" )
-   set_property ( TARGET graphblas_static PROPERTY C_STANDARD 11 )
-endif ( )
+# HACK build static library only
+# Keep same name as shared lib so no further changes are needed
+add_library ( graphblas STATIC ${GRAPHBLAS_SOURCES} )
+SET_TARGET_PROPERTIES ( graphblas PROPERTIES
+   VERSION ${GraphBLAS_VERSION_MAJOR}.${GraphBLAS_VERSION_MINOR}.${GraphBLAS_VERSION_SUB}
+   OUTPUT_NAME graphblas
+   SOVERSION ${GraphBLAS_VERSION_MAJOR}
+   C_STANDARD_REQUIRED 11
+   PUBLIC_HEADER "Include/GraphBLAS.h" )
+set_property ( TARGET graphblas PROPERTY C_STANDARD 11 )
 
 #-------------------------------------------------------------------------------
 # select the threading library 
@@ -382,19 +383,17 @@ message ( STATUS "CMAKE C flags: " ${CMAKE_C_FLAGS} )
 #-------------------------------------------------------------------------------
 
 file ( GLOB DEMO_SOURCES "Demo/Source/*.c" )
-add_library ( graphblasdemo SHARED ${DEMO_SOURCES} )
+# add_library ( graphblasdemo SHARED ${DEMO_SOURCES} )
+# SET_TARGET_PROPERTIES ( graphblasdemo PROPERTIES
+#     C_STANDARD_REQUIRED 11 )
+# set_property ( TARGET graphblasdemo PROPERTY C_STANDARD 11 )
+# target_link_libraries ( graphblasdemo         m graphblas )
+
+add_library ( graphblasdemo STATIC ${DEMO_SOURCES} )
 SET_TARGET_PROPERTIES ( graphblasdemo PROPERTIES
     C_STANDARD_REQUIRED 11 )
 set_property ( TARGET graphblasdemo PROPERTY C_STANDARD 11 )
-target_link_libraries ( graphblasdemo         m graphblas )
-
-if ( BUILD_GRB_STATIC_LIBRARY )
-    add_library ( graphblasdemo_static STATIC ${DEMO_SOURCES} )
-    SET_TARGET_PROPERTIES ( graphblasdemo_static PROPERTIES
-        C_STANDARD_REQUIRED 11 )
-    set_property ( TARGET graphblasdemo_static PROPERTY C_STANDARD 11 )
-    target_link_libraries ( graphblasdemo_static  graphblas_static )
-endif ( )
+target_link_libraries ( graphblasdemo  graphblas )
 
 #-------------------------------------------------------------------------------
 # Demo programs
