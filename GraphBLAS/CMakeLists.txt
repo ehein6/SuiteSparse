@@ -54,6 +54,8 @@ if ( CMAKE_VERSION VERSION_GREATER "3.0" )
     cmake_policy ( SET CMP0048 NEW )
 endif ( )
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 # version of SuiteSparse:GraphBLAS
 set ( GraphBLAS_DATE "Oct 21, 2019" )
 set ( GraphBLAS_VERSION_MAJOR 3 )
@@ -130,8 +132,8 @@ execute_process (
 #-------------------------------------------------------------------------------
 
 configure_file (
-    "Config/GraphBLAS.h.tmp" 
-    "${PROJECT_SOURCE_DIR}/Include/GraphBLAS.h" 
+    "Config/GraphBLAS.h.tmp"
+    "${PROJECT_SOURCE_DIR}/Include/GraphBLAS.h"
 )
 configure_file (
     "Config/GraphBLAS_version.tex.in"
@@ -284,7 +286,7 @@ SET_TARGET_PROPERTIES ( graphblas PROPERTIES
 set_property ( TARGET graphblas PROPERTY C_STANDARD 11 )
 
 #-------------------------------------------------------------------------------
-# select the threading library 
+# select the threading library
 #-------------------------------------------------------------------------------
 
 if ( USER_OPENMP )
@@ -331,7 +333,7 @@ elseif ( USE_POSIX )
 else ( )
     # use no threading at all
     message ( WARNING "No support for user threads; GraphBLAS will not be thread-safe" )
-    target_link_libraries ( graphblas        m )
+    # target_link_libraries ( graphblas        m )
     if ( BUILD_GRB_STATIC_LIBRARY )
         target_link_libraries ( graphblas_static m )
     endif ( )
