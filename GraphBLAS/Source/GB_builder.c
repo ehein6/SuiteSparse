@@ -325,7 +325,7 @@ GrB_Info GB_builder                 // build a matrix from tuples
 
             #pragma omp parallel for num_threads(nthreads) schedule(static) \
                 reduction(&&:known_sorted) reduction(&&:no_duplicates_found)
-            for (int tid = 0 ; tid < nthreads ; tid++)
+            cilk_for (int tid = 0 ; tid < nthreads ; tid++)
             {
 
                 kbad [tid] = -1 ;
@@ -349,12 +349,12 @@ GrB_Info GB_builder                 // build a matrix from tuples
                     }
 
                     // check if the tuples are already sorted
-                    known_sorted = known_sorted &&
-                        ((jlast < j) || (jlast == j && ilast <= i)) ;
+                    if (!((jlast < j) || (jlast == j && ilast <= i)))
+                        known_sorted = false;
 
                     // check if this entry is a duplicate of the one before it
-                    no_duplicates_found = no_duplicates_found &&
-                        (!(jlast == j && ilast == i)) ;
+                    if (jlast == j && ilast == i)
+                        no_duplicates_found = false;
 
                     // copy the tuple into I_work.  J_work is done later.
                     I_work [k] = i ;
@@ -441,7 +441,7 @@ GrB_Info GB_builder                 // build a matrix from tuples
 
             #pragma omp parallel for num_threads(nthreads) schedule(static) \
                 reduction(&&:known_sorted) reduction(&&:no_duplicates_found)
-            for (int tid = 0 ; tid < nthreads ; tid++)
+            cilk_for (int tid = 0 ; tid < nthreads ; tid++)
             {
 
                 kbad [tid] = -1 ;
@@ -462,11 +462,12 @@ GrB_Info GB_builder                 // build a matrix from tuples
                     }
 
                     // check if the tuples are already sorted
-                    known_sorted = known_sorted && (ilast <= i) ;
+                    if (ilast > i)
+                        known_sorted = false;
 
                     // check if this entry is a duplicate of the one before it
-                    no_duplicates_found = no_duplicates_found &&
-                        (!(ilast == i)) ;
+                    if (ilast == i)
+                        no_duplicates_found = false;
 
                     // copy the tuple into the work arrays to be sorted
                     I_work [k] = i ;
