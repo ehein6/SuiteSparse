@@ -164,7 +164,7 @@ GrB_Info GB_subassign_02
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1) \
         reduction(&&:pending_sorted)
-    for (int taskid = 0 ; taskid < ntasks ; taskid++)
+    cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
     {
 
         //----------------------------------------------------------------------

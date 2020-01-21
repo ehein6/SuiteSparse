@@ -1866,7 +1866,7 @@ GrB_Info GB_subassign_emult_slice
     int64_t *restrict Pending_j = Pending->j ;                              \
     GB_void *restrict Pending_x = Pending->x ;                              \
     int64_t npending_orig = Pending->n ;                                    \
-    bool pending_sorted = Pending->sorted ;
+    long pending_sorted = Pending->sorted ;
 
 //------------------------------------------------------------------------------
 // GB_START_PENDING_INSERTION: start insertion of pending tuples (phase 2)
@@ -1890,7 +1890,7 @@ GrB_Info GB_subassign_emult_slice
 //------------------------------------------------------------------------------
 
 #define GB_PHASE2_TASK_WRAPUP                                               \
-    pending_sorted = pending_sorted && task_sorted ;                        \
+    REMOTE_AND(&pending_sorted, task_sorted);                               \
     ASSERT (n == npending_orig + Npending [taskid+1]) ;
 
 //------------------------------------------------------------------------------
