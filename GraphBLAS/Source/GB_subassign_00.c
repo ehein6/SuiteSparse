@@ -64,7 +64,7 @@ GrB_Info GB_subassign_00
 
     #pragma omp parallel for num_threads(nthreads) schedule(static) \
         reduction(+:nzombies)
-    for (int64_t pS = 0 ; pS < snz ; pS++)
+    cilk_for (int64_t pS = 0 ; pS < snz ; pS++)
     { 
         // S (inew,jnew) is a pointer back into C (I(inew), J(jnew))
         int64_t pC = Sx [pS] ;
@@ -75,7 +75,7 @@ GrB_Info GB_subassign_00
         // action: C_repl: ( delete ): becomes a zombie
         if (!GB_IS_ZOMBIE (i))
         {
-            nzombies++ ;
+            REMOTE_ADD(&nzombies, 1) ;
             Ci [pC] = GB_FLIP (i) ;
         }
     }

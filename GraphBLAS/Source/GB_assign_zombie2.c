@@ -44,7 +44,7 @@ void GB_assign_zombie2
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1) \
         reduction(+:nzombies)
-    for (int taskid = 0 ; taskid < ntasks ; taskid++)
+    cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
     {
         int64_t kfirst, klast ;
         GB_PARTITION (kfirst, klast, Cnvec, taskid, ntasks) ;
@@ -68,7 +68,7 @@ void GB_assign_zombie2
             if (found && !is_zombie)
             { 
                 ASSERT (i == Ci [pC]) ;
-                nzombies++ ;
+                REMOTE_ADD(&nzombies, 1) ;
                 Ci [pC] = GB_FLIP (i) ;
             }
         }

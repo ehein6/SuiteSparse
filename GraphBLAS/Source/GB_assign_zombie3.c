@@ -69,7 +69,7 @@ void GB_assign_zombie3
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1) \
         reduction(+:nzombies)
-    for (int taskid = 0 ; taskid < ntasks ; taskid++)
+    cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
     {
         int64_t p1, p2 ;
         GB_PARTITION (p1, p2, zjnz, taskid, ntasks) ;
@@ -116,7 +116,7 @@ void GB_assign_zombie3
                     if (!mij)
                     { 
                         // delete Z(i,j) by marking it as a zombie
-                        nzombies++ ;
+                        REMOTE_ADD(&nzombies, 1) ;
                         Zi [pZ] = GB_FLIP (i) ;
                     }
                 }

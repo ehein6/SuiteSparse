@@ -479,7 +479,7 @@ GrB_Info GB_matvec_check    // check a GraphBLAS matrix or vector
             int64_t i = A->i [p] ;
             bool is_zombie = GB_IS_ZOMBIE (i) ;
             i = GB_UNFLIP (i) ;
-            if (is_zombie) nzombies++ ;
+            if (is_zombie) REMOTE_ADD(&nzombies, 1) ;
             if (prcol)
             { 
                 if ((pr > 1 && p < GB_NZBRIEF) || pr > 2)

@@ -52,7 +52,7 @@
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1) \
         reduction(+:nzombies)
-    for (int taskid = 0 ; taskid < ntasks ; taskid++)
+    cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
     {
 
         //----------------------------------------------------------------------
@@ -180,7 +180,7 @@
         // sum up the zombies found by this task
         //----------------------------------------------------------------------
 
-        nzombies += task_nzombies ;
+        REMOTE_ADD(&nzombies, task_nzombies) ;
     }
 
     //--------------------------------------------------------------------------

@@ -244,7 +244,7 @@ GrB_Info GB_reduce_to_vector        // C<M> = accum (C,reduce(A))
         int nth = GB_nthreads (anvec, chunk, nthreads_max) ;
         #pragma omp parallel for num_threads(nth) schedule(static) \
             reduction(+:nzombies)
-        for (int64_t k = 0 ; k < anvec ; k++)
+        cilk_for (int64_t k = 0 ; k < anvec ; k++)
         {
             // if A(:,j) is empty, then the entry in T becomes a zombie
             int64_t j = (Ah == NULL) ? k : Ah [k] ;
@@ -253,7 +253,7 @@ GrB_Info GB_reduce_to_vector        // C<M> = accum (C,reduce(A))
             { 
                 // A(:,j) is empty: T(j) is a zombie
                 Ti [k] = GB_FLIP (j) ;
-                nzombies++ ;
+                REMOTE_ADD(&nzombies, 1) ;
             }
             else
             { 

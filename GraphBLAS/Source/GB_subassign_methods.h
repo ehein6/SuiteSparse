@@ -1836,7 +1836,7 @@ GrB_Info GB_subassign_emult_slice
 // sum up the zombie count, and record the # of pending tuples for this task
 
 #define GB_PHASE1_TASK_WRAPUP                                               \
-    nzombies += task_nzombies ;                                             \
+    REMOTE_ADD(&nzombies, task_nzombies) ;                                             \
     Npending [taskid] = task_pending ;
 
 //------------------------------------------------------------------------------

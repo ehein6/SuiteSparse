@@ -43,13 +43,13 @@ void GB_assign_zombie1
 
     #pragma omp parallel for num_threads(nthreads) schedule(static) \
         reduction(+:nzombies)
-    for (int64_t pC = pC_start ; pC < pC_end ; pC++)
+    cilk_for (int64_t pC = pC_start ; pC < pC_end ; pC++)
     {
         int64_t i = Ci [pC] ;
         if (!GB_IS_ZOMBIE (i))
         { 
             // delete C(i,j) by marking it as a zombie
-            nzombies++ ;
+            REMOTE_ADD(&nzombies, 1) ;
             Ci [pC] = GB_FLIP (i) ;
         }
     }

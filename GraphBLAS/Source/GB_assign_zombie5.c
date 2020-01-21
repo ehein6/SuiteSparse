@@ -90,7 +90,7 @@ GrB_Info GB_assign_zombie5
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1) \
         reduction(+:nzombies)
-    for (int tid = 0 ; tid < ntasks ; tid++)
+    cilk_for (int tid = 0 ; tid < ntasks ; tid++)
     {
 
         //----------------------------------------------------------------------
@@ -170,7 +170,7 @@ GrB_Info GB_assign_zombie5
                     if (!mij)
                     { 
                         // delete Z(i,j) by marking it as a zombie
-                        nzombies++ ;
+                        REMOTE_ADD(&nzombies, 1) ;
                         Zi [pZ] = GB_FLIP (i) ;
                     }
                 }
