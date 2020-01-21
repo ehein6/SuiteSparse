@@ -190,6 +190,10 @@
 // no user threads
 #endif
 
+// FIXME select Cilk
+#include <cilk/cilk.h>
+#include <emu_c_utils/emu_c_utils.h>
+
 //------------------------------------------------------------------------------
 // the GraphBLAS integer
 //------------------------------------------------------------------------------
