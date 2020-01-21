@@ -49,7 +49,7 @@ int64_t TRI_DOT                     // # of triangles
 
     #pragma omp parallel for num_threads(threads) reduction(+:ntri) schedule(dynamic,chunk)
     #endif
-    for (Index j = 0 ; j < n ; j++)
+    cilk_for (Index j = 0 ; j < n ; j++)
     {
 
         //----------------------------------------------------------------------
@@ -164,7 +164,7 @@ int64_t TRI_DOT                     // # of triangles
                     //----------------------------------------------------------
 
                     // C(i,j) += U(k,i) * L(k,j)
-                    ntri++ ;
+                    REMOTE_ADD(&ntri, 1) ;
 
                     // advance to the next rows in the U(:,i) and L(:,j) lists
                     pl++ ;

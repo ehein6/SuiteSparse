@@ -372,15 +372,15 @@ GrB_Info GB_AxB_saxpy_parallel      // parallel matrix-matrix multiply
     bool any_Gustavson = false ;
     #pragma omp parallel for num_threads(nthreads) schedule(static,1) \
         reduction(||:any_Gustavson)
-    for (int tid = 0 ; tid < nthreads ; tid++)
+    cilk_for (int tid = 0 ; tid < nthreads ; tid++)
     { 
         GrB_Desc_Value thread_method_to_use ;
         GB_AxB_select (A, (nthreads == 1) ? B : Bslice [tid], semiring,
             AxB_method, &thread_method_to_use, &(bjnz_max [tid])) ;
         AxB_methods_used [tid] = thread_method_to_use ;
         // collect all thread-specific info
-        any_Gustavson = any_Gustavson ||
-            (thread_method_to_use == GxB_AxB_GUSTAVSON) ;
+        if (thread_method_to_use == GxB_AxB_GUSTAVSON)
+            any_Gustavson = true;
     }
 
     (*AxB_method_used) = AxB_methods_used [0] ;
@@ -430,7 +430,7 @@ GrB_Info GB_AxB_saxpy_parallel      // parallel matrix-matrix multiply
     #pragma omp parallel for num_threads(nthreads) schedule(static,1) \
         reduction(&&:allmask) reduction(||:panic) \
         reduction(&&:ok)
-    for (int tid = 0 ; tid < nthreads ; tid++)
+    cilk_for (int tid = 0 ; tid < nthreads ; tid++)
     { 
         // each thread allocates its output, using malloc and realloc
         bool thread_mask_applied = false ;
@@ -439,9 +439,9 @@ GrB_Info GB_AxB_saxpy_parallel      // parallel matrix-matrix multiply
             flipxy, AxB_methods_used [tid], bjnz_max [tid],
             false, &thread_mask_applied, Sauna_ids [tid]) ;
         // collect all thread-specific info
-        ok      = ok      && (thread_info == GrB_SUCCESS) ;
-        allmask = allmask && (thread_mask_applied) ;
-        panic   = panic   || (thread_info == GrB_PANIC) ;
+        if (thread_info != GrB_SUCCESS) ok = false;
+        if (!thread_mask_applied) allmask = false;
+        if (thread_info == GrB_PANIC) panic = true;
     }
 
     //--------------------------------------------------------------------------

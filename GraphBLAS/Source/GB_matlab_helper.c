@@ -114,12 +114,12 @@ bool GB_matlab_helper3              // return true if OK, false on error
 
     #pragma omp parallel for num_threads(nthreads) schedule(static) \
         reduction(&&:ok) reduction(max:listmax)
-    for (int64_t k = 0 ; k < len ; k++)
+    cilk_for (int64_t k = 0 ; k < len ; k++)
     {
         double x = List_double [k] ;
         int64_t i = (int64_t) x ;
         ok = ok && (x == (double) i) ;
-        listmax = GB_IMAX (listmax, i) ;
+        REMOTE_MAX(&listmax, i) ;
         List [k] = i - 1 ;
     }
 
@@ -146,10 +146,10 @@ void GB_matlab_helper3i
 
     #pragma omp parallel for num_threads(nthreads) schedule(static) \
         reduction(max:listmax)
-    for (int64_t k = 0 ; k < len ; k++)
+    cilk_for (int64_t k = 0 ; k < len ; k++)
     {
         int64_t i = List_int64 [k] ;
-        listmax = GB_IMAX (listmax, i) ;
+        REMOTE_MAX(&listmax, i) ;
         List [k] = i - 1 ;
     }
 
@@ -172,9 +172,9 @@ int64_t GB_matlab_helper4           // find max (I) + 1
     GrB_Index imax = 0 ;
     #pragma omp parallel for num_threads(nthreads) schedule(static) \
         reduction(max:imax)
-    for (int64_t k = 0 ; k < len ; k++)
+    cilk_for (int64_t k = 0 ; k < len ; k++)
     {
-        imax = GB_IMAX (imax, I [k]) ;
+        REMOTE_MAX(&imax, I [k]) ;
     }
     if (len > 0) imax++ ;
     return (imax) ;

@@ -134,7 +134,7 @@
     {
         #pragma omp parallel for num_threads(nthreads) schedule(static) \
             reduction(+:tnz)
-        for (int64_t i = 0 ; i < n ; i++)
+        cilk_for (int64_t i = 0 ; i < n ; i++)
         {
             for (int tid = 1 ; tid < nth ; tid++)
             {
@@ -149,7 +149,7 @@
                         // Work0 [i] = Work [i] ; no typecast
                         GB_COPY_ARRAY_TO_ARRAY (Work0, i, Work, i) ;
                         Mark0 [i] = true ;
-                        tnz++ ;
+                        REMOTE_ADD(&tnz, 1) ;
                     }
                     else
                     { 
