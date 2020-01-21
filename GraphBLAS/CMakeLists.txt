@@ -234,6 +234,11 @@ else ( )
     set ( CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_RELEASE}" )
 endif ( )
 
+# Link with emu_c_utils
+find_package(emu_c_utils REQUIRED)
+link_libraries(${EMU_C_UTILS_LIBRARIES})
+include_directories(${EMU_C_UTILS_INCLUDE_DIRS})
+
 #-------------------------------------------------------------------------------
 # dynamic graphblas library properties
 #-------------------------------------------------------------------------------
