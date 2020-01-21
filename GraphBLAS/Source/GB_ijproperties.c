@@ -202,7 +202,7 @@ GrB_Info GB_ijproperties        // check I and determine its properties
             reduction(||:I_unsorted) reduction(&&:I_contig) \
             reduction(min:imin) reduction(max:imax) \
             reduction(||:I_has_duplicates)
-        for (int tid = 0 ; tid < ntasks ; tid++)
+        cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t istart, iend ;
             GB_PARTITION (istart, iend, ni, tid, ntasks) ;
@@ -234,8 +234,8 @@ GrB_Info GB_ijproperties        // check I and determine its properties
                         I_contig = false ;
                     }
                 }
-                imin = GB_IMIN (imin, i) ;
-                imax = GB_IMAX (imax, i) ;
+                REMOTE_MIN(&imin, i) ;
+                REMOTE_MAX(&imax, i) ;
                 ilast = i ;
             }
         }
