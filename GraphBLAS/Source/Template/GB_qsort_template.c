@@ -113,7 +113,7 @@ static void GB_quicksort    // sort A [0:n-1]
         int64_t k = GB_partition (GB_arg (A), n, seed) ;
 
         // sort each partition
-        GB_quicksort (GB_arg (A), k, seed) ;                // sort A [0:k-1]
+        cilk_spawn GB_quicksort (GB_arg (A), k, seed) ;     // sort A [0:k-1]
         GB_quicksort (GB_arg_offset (A, k), n-k, seed) ;    // sort A [k+1:n-1]
     }
 }
