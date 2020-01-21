@@ -141,7 +141,7 @@ GrB_Info GB_subref_slice
     int64_t I_inverse_limit = GB_IMAX (4096, anz) ;
     bool I_inverse_ok = (Ikind == GB_LIST &&
         ((nI > avlen / 256) || ((nI + avlen) < I_inverse_limit))) ;
-    bool need_I_inverse = false ;
+    long need_I_inverse = 0 ;
     bool post_sort = false ;
     int64_t iinc = Icolon [GxB_INC] ;
 
@@ -175,7 +175,7 @@ GrB_Info GB_subref_slice
 
     #pragma omp parallel for num_threads(nthreads_for_Cwork) schedule(static) \
         reduction(||:need_I_inverse)
-    for (int64_t kC = 0 ; kC < Cnvec ; kC++)
+    cilk_for (int64_t kC = 0 ; kC < Cnvec ; kC++)
     { 
         // jC is the (kC)th vector of C = A(I,J)
         // int64_t jC = (Ch == NULL) ? kC : Ch [kC] ;
@@ -204,7 +204,7 @@ GrB_Info GB_subref_slice
         #endif
 
         // log the result
-        need_I_inverse = need_I_inverse || this_needs_I_inverse ;
+        REMOTE_OR(&need_I_inverse, this_needs_I_inverse);
         Cwork [kC] = work ;
     }
 
