@@ -198,18 +198,19 @@ void GB_merge_parallel_2                // parallel merge
     #pragma omp task firstprivate(S_task0_0, S_task0_1,     \
         Left_task0_0,  Left_task0_1,  nleft_task0,          \
         Right_task0_0, Right_task0_1, nright_task0)
-    GB_merge_select_2 (S_task0_0, S_task0_1,
+    cilk_spawn GB_merge_select_2 (S_task0_0, S_task0_1,
         Left_task0_0,  Left_task0_1,  nleft_task0,
         Right_task0_0, Right_task0_1, nright_task0) ;
 
     #pragma omp task firstprivate(S_task1_0, S_task1_1,     \
         Left_task1_0,  Left_task1_1,  nleft_task1,          \
         Right_task1_0, Right_task1_1, nright_task1)
-    GB_merge_select_2 (S_task1_0, S_task1_1,
+    cilk_spawn GB_merge_select_2 (S_task1_0, S_task1_1,
         Left_task1_0,  Left_task1_1,  nleft_task1,
         Right_task1_0, Right_task1_1, nright_task1) ;
 
     #pragma omp taskwait
+    cilk_sync;
 }
 
 //------------------------------------------------------------------------------
@@ -341,21 +342,22 @@ void GB_mergesort_2 // sort array A of size 2-by-n, using 2 keys (A [0:1][])
 
         #pragma omp task \
            firstprivate(A_1st0, A_1st1, W_1st0, W_1st1, n1)
-        GB_mergesort_2 (A_1st0, A_1st1, W_1st0, W_1st1, n1) ;
+        cilk_spawn GB_mergesort_2 (A_1st0, A_1st1, W_1st0, W_1st1, n1) ;
 
         #pragma omp task \
            firstprivate(A_2nd0, A_2nd1, W_2nd0, W_2nd1, n2)
-        GB_mergesort_2 (A_2nd0, A_2nd1, W_2nd0, W_2nd1, n2) ;
+        cilk_spawn GB_mergesort_2 (A_2nd0, A_2nd1, W_2nd0, W_2nd1, n2) ;
 
         #pragma omp task \
            firstprivate(A_3rd0, A_3rd1, W_3rd0, W_3rd1, n3)
-        GB_mergesort_2 (A_3rd0, A_3rd1, W_3rd0, W_3rd1, n3) ;
+        cilk_spawn GB_mergesort_2 (A_3rd0, A_3rd1, W_3rd0, W_3rd1, n3) ;
 
         #pragma omp task \
            firstprivate(A_4th0, A_4th1, W_4th0, W_4th1, n4)
-        GB_mergesort_2 (A_4th0, A_4th1, W_4th0, W_4th1, n4) ;
+        cilk_spawn GB_mergesort_2 (A_4th0, A_4th1, W_4th0, W_4th1, n4) ;
 
         #pragma omp taskwait
+        cilk_sync;
 
         // ---------------------------------------------------------------------
         // merge pairs of quarters of A into two halves of W, in parallel
@@ -363,15 +365,16 @@ void GB_mergesort_2 // sort array A of size 2-by-n, using 2 keys (A [0:1][])
 
         #pragma omp task firstprivate( \
             W_1st0, W_1st1, A_1st0, A_1st1, n1, A_2nd0, A_2nd1, n2)
-        GB_merge_select_2 (
+        cilk_spawn GB_merge_select_2 (
             W_1st0, W_1st1, A_1st0, A_1st1, n1, A_2nd0, A_2nd1, n2) ;
 
         #pragma omp task firstprivate( \
             W_3rd0, W_3rd1, A_3rd0, A_3rd1, n3, A_4th0, A_4th1, n4)
-        GB_merge_select_2 (
+        cilk_spawn GB_merge_select_2 (
             W_3rd0, W_3rd1, A_3rd0, A_3rd1, n3, A_4th0, A_4th1, n4) ;
 
         #pragma omp taskwait
+        cilk_sync;
 
         // ---------------------------------------------------------------------
         // merge the two halves of W into A
