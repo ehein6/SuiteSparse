@@ -239,6 +239,14 @@ find_package(emu_c_utils REQUIRED)
 link_libraries(${EMU_C_UTILS_LIBRARIES})
 include_directories(${EMU_C_UTILS_INCLUDE_DIRS})
 
+# Activate PGI compiler bug workaround for Emu
+# Replaces variable-length arrays with fixed-length arrays,
+# reducing the number of cactus stack allocations we need to do at runtime.
+if (CMAKE_SYSTEM_NAME STREQUAL "Emu1")
+set ( CMAKE_C_FLAGS    "${CMAKE_C_FLAGS} -DPGI_COMPILER_BUG" )
+set ( CMAKE_CXX_FLAGS  "${CMAKE_C_FLAGS} -DPGI_COMPILER_BUG" )
+endif()
+
 #-------------------------------------------------------------------------------
 # dynamic graphblas library properties
 #-------------------------------------------------------------------------------
