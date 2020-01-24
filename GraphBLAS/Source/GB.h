@@ -1845,13 +1845,28 @@ GrB_Info GB_wait                // finish all pending computations
     k1 = ((tid) ==  0          ) ?  0  : GB_PART ((tid),  n, nthreads) ;    \
     k2 = ((tid) == (nthreads)-1) ? (n) : GB_PART ((tid)+1,n, nthreads) ;
 
+#if defined(__cilk)
+    #include <cilk/cilk.h>
+    #include <emu_c_utils/emu_c_utils.h>
+    // FIXME Only used in two places, need to rewrite
+    #define GB_OPENMP_THREAD_ID         (0)
+    // FIXME Assuming single-node execution for now
+    #define GB_OPENMP_MAX_THREADS       (64)
+    #define GB_OPENMP_GET_NUM_THREADS   (64)
 
-#if defined ( _OPENMP )
+    // by default, give each thread at least 128 units of work to do
+    #define GB_CHUNK_DEFAULT 128
+
+#elif defined ( _OPENMP )
 
     #include <omp.h>
     #define GB_OPENMP_THREAD_ID         omp_get_thread_num ( )
     #define GB_OPENMP_MAX_THREADS       omp_get_max_threads ( )
     #define GB_OPENMP_GET_NUM_THREADS   omp_get_num_threads ( )
+
+    // by default, give each thread at least 4096 units of work to do
+    #define GB_CHUNK_DEFAULT 4096
+
 
 #else
 
@@ -1859,14 +1874,10 @@ GrB_Info GB_wait                // finish all pending computations
     #define GB_OPENMP_MAX_THREADS       (1)
     #define GB_OPENMP_GET_NUM_THREADS   (1)
 
+    // by default, give each thread at least 4096 units of work to do
+    #define GB_CHUNK_DEFAULT 4096
+
 #endif
-
-#include <cilk/cilk.h>
-
-#include <emu_c_utils/emu_c_utils.h>
-
-// by default, give each thread at least 4096 units of work to do
-#define GB_CHUNK_DEFAULT 4096
 
 //------------------------------------------------------------------------------
 // GB_queue operations
