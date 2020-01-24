@@ -357,7 +357,6 @@ endif ( )
 #if (CMAKE_SYSTEM_NAME STREQUAL "Emu1")
 message ( STATUS "Using Cilk for internal parallelism" )
 set ( CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -fcilkplus" )
-target_link_libraries ( graphblas  -lcilkrts )
 #endif()
 
 #if ( OPENMP_FOUND )
