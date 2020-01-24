@@ -52,6 +52,7 @@
 
     // each thread reduces its own part in parallel
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+    #pragma cilk grainsize = 1
     cilk_for (int tid = 0 ; tid < ntasks ; tid++)
     {
 

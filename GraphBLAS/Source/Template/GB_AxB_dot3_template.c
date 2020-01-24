@@ -52,6 +52,7 @@
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1) \
         reduction(+:nzombies)
+    #pragma cilk grainsize = 1
     cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
     {
 

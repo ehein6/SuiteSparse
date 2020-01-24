@@ -90,6 +90,7 @@ GrB_Info GB_assign_zombie5
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1) \
         reduction(+:nzombies)
+    #pragma cilk grainsize = 1
     cilk_for (int tid = 0 ; tid < ntasks ; tid++)
     {
 

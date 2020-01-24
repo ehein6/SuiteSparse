@@ -75,6 +75,7 @@ GrB_Info GB_to_hyper        // convert a matrix to hypersparse
         }
 
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+        #pragma cilk grainsize = 1
         cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t jstart, jend, my_nvec_nonempty = 0 ; ;
@@ -128,6 +129,7 @@ GrB_Info GB_to_hyper        // convert a matrix to hypersparse
         //----------------------------------------------------------------------
 
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+        #pragma cilk grainsize = 1
         cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t jstart, jend, k = Count [tid] ;

@@ -202,6 +202,7 @@ GrB_Info GB_ijproperties        // check I and determine its properties
             reduction(||:I_unsorted) reduction(&&:I_contig) \
             reduction(min:imin) reduction(max:imax) \
             reduction(||:I_has_duplicates)
+        #pragma cilk grainsize = 1
         cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t istart, iend ;

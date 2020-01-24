@@ -72,6 +72,7 @@ bool GB_is_diagonal             // true if A is diagonal
     int diagonal = true ;
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+    #pragma cilk grainsize = 1
     cilk_for (int tid = 0 ; tid < ntasks ; tid++)
     {
 

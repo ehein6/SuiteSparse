@@ -405,6 +405,7 @@ GrB_Info GB_subref_phase0
 
         // scan all of Ah and check each entry if it appears in J
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+        #pragma cilk grainsize = 1
         cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t kA_start, kA_end, my_Cnvec = 0 ;
@@ -441,6 +442,7 @@ GrB_Info GB_subref_phase0
 
         // scan all of J and check each entry if it appears in Ah
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+        #pragma cilk grainsize = 1
         cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t jC_start, jC_end, my_Cnvec = 0 ;
@@ -565,6 +567,7 @@ GrB_Info GB_subref_phase0
         if (jinc > 0)
         {
             #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+            #pragma cilk grainsize = 1
             cilk_for (int tid = 0 ; tid < ntasks ; tid++)
             {
                 int64_t kA_start, kA_end ;
@@ -587,6 +590,7 @@ GrB_Info GB_subref_phase0
         else
         {
             #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+            #pragma cilk grainsize = 1
             cilk_for (int tid = 0 ; tid < ntasks ; tid++)
             {
                 int64_t kA_start, kA_end ;
@@ -620,6 +624,7 @@ GrB_Info GB_subref_phase0
         // then found in Ah, via binary search.
 
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+        #pragma cilk grainsize = 1
         cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t jC_start, jC_end ;

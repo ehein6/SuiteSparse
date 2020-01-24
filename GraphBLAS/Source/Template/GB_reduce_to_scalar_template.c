@@ -52,6 +52,7 @@
         bool early_exit = false ;
 
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+        #pragma cilk grainsize = 1
         cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t pstart, pend ;

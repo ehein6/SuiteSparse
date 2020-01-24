@@ -89,6 +89,7 @@ GrB_Info GB_to_nonhyper     // convert a matrix to non-hypersparse
 
         #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1) \
             reduction(+:nvec_nonempty)
+        #pragma cilk grainsize = 1
         cilk_for (int tid = 0 ; tid < ntasks ; tid++)
         {
             int64_t jstart, jend, my_nvec_nonempty = 0 ;

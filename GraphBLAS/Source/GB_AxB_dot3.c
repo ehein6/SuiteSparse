@@ -195,6 +195,7 @@ GrB_Info GB_AxB_dot3                // C<M> = A'*B using dot product method
     // as the pth entry in C.
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1)
+    #pragma cilk grainsize = 1
     cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
     {
 

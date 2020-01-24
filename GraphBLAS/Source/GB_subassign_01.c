@@ -77,6 +77,7 @@ GrB_Info GB_subassign_01
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1) \
         reduction(+:nzombies)
+    #pragma cilk grainsize = 1
     cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
     {
 
@@ -143,6 +144,7 @@ GrB_Info GB_subassign_01
 
     #pragma omp parallel for num_threads(nthreads) schedule(dynamic,1) \
         reduction(&&:pending_sorted)
+    #pragma cilk grainsize = 1
     cilk_for (int taskid = 0 ; taskid < ntasks ; taskid++)
     {
 
