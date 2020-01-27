@@ -401,7 +401,7 @@ GrB_Info GB_AxB_flopcount
         if (check_quick_return)
         { 
             #pragma omp atomic update
-            total_flops += task_flops ;
+            REMOTE_ADD(&total_flops, task_flops);
         }
     }
 

@@ -200,7 +200,7 @@ GrB_Info GB_subref_slice
             Ikind, nI, I_inverse_ok, need_qsort, iinc, 0) ;
         #ifdef GB_DEBUG
         #pragma omp atomic update
-        Hist [method] ++ ;
+        REMOTE_ADD(&Hist [method], 1) ;
         #endif
 
         // log the result
